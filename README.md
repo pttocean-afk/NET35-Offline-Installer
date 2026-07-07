@@ -18,7 +18,7 @@ Windows 安裝光碟的 `sources\sxs` 資料夾中已有 .NET 3.5 的 CAB 檔。
 ```
 NET35-Offline-Installer/
 ├── install.bat                    ← 點兩下以系統管理員執行
-├── build_offline_package.ps1      ← 自動從 Windows ISO 抽取 sxs
+├── build_offline_package.ps1      ← 自動從 Windows ISO 取出 sxs
 ├── README.md
 ├── Win10_22H2/sxs/                ← (使用者自行準備)
 └── Win11_25H2/sxs/                ← (使用者自行準備)
@@ -51,7 +51,7 @@ NET35-Offline-Installer/
 3. 複製 `sources\sxs` 整個資料夾
 4. 貼到對應版本目錄下
 
-### 方法二：使用 build script（自動化）
+### 方法二：用 extract script 自動取出
 
 以系統管理員執行 PowerShell：
 
