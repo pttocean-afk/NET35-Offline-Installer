@@ -1,0 +1,4 @@
+# Microsoft proprietary CAB files — users must extract from their own Windows ISO
+Win10_*/sxs/
+Win11_*/sxs/
+*/sxs/
