@@ -1,6 +1,6 @@
 # .NET Framework 3.5 Offline Installer
 
-> DISM-based offline installer for Windows 10 / 11 — no internet connection required.
+> DISM-based offline installer for Windows 10 / 11 — sxs CAB files included, no internet required.
 
 [![Windows](https://img.shields.io/badge/Windows-10%20%7C%2011-0078D6?logo=windows&logoColor=white)](https://github.com/pttocean-afk/NET35-Offline-Installer)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -8,60 +8,60 @@
 
 ---
 
-## 原理
+## 快速開始
 
-Windows 安裝光碟的 `sources\sxs` 資料夾中已有 .NET 3.5 的 CAB 檔。
-透過 DISM 指定本機來源即可離線啟用，不需連 Windows Update 等待。
+1. **下載** 本專案（Code → Download ZIP 或直接 git clone）
+2. 對 `install.bat` 按右鍵 → **以系統管理員身分執行**
+3. 完成！sxs 已內建在專案中，不需額外準備
 
 ## 檔案結構
 
 ```
 NET35-Offline-Installer/
-├── install.bat                    ← 點兩下以系統管理員執行
-├── build_offline_package.ps1      ← 自動從 Windows ISO 取出 sxs
+├── install.bat                     ← 點兩下以系統管理員執行
+├── build_offline_package.ps1       ← (選用) 從 Windows ISO 自訂抽取 sxs
 ├── README.md
-├── Win10_22H2/sxs/                ← (使用者自行準備)
-└── Win11_25H2/sxs/                ← (使用者自行準備)
+├── Win10_22H2/sxs/                 ← CAB 檔已內建
+└── Win11_25H2/sxs/                 ← CAB 檔已內建
 ```
 
-## 使用方法
+## 運作原理
 
-### 一般安裝
+Windows 安裝光碟的 `sources\sxs` 資料夾中已有 .NET 3.5 的 CAB 檔！
+透過 DISM 指定本機 sxs 路徑即可離線啟用，完全不用連 Windows Update。
 
-1. **下載** 本專案的最新版本
-2. **準備 sxs 來源**（見下方說明）
-3. 對 `install.bat` 按右鍵 → **以系統管理員身分執行**
-4. 完成！
+`install.bat` 會自動：
+- 檢查 .NET 3.5 是否已安裝（已裝則跳過）
+- 偵測目前 Windows 10 或 11
+- 從對應版本的 sxs 資料夾離線啟用
+- 若離線安裝失敗 → 自動 fallback 走 Windows Update
 
-### install.bat 會自動：
+## 內建 sxs 版本
 
-- 檢查 .NET 3.5 是否已安裝 → 已裝則跳過
-- 偵測 Windows 10 / 11 版本
-- 從對應的 `sxs` 資料夾離線啟用 NetFx3
-- 若離線失敗 → 自動 fallback 到 Windows Update
+| 資料夾 | 來源 |
+|--------|------|
+| `Win10_22H2/sxs/` | Windows 10 22H2 (build 19045) |
+| `Win11_25H2/sxs/` | Windows 11 25H2 |
 
-## 如何取得 sxs
+> 遇到版本不合時，`install.bat` 會自動轉 Windows Update，不影響安裝。
 
-### 方法一：從 Windows ISO 抽取（建議）
+## 自訂 sxs（選用）
 
-1. 下載 Windows ISO：
-   - [Windows 10](https://www.microsoft.com/software-download/windows10)
-   - [Windows 11](https://www.microsoft.com/software-download/windows11)
-2. 掛載 ISO（右鍵 → 掛載）
-3. 複製 `sources\sxs` 整個資料夾
-4. 貼到對應版本目錄下
+若想自己準備特定版本的 sxs：
 
-### 方法二：用 extract script 自動取出
+### 從 ISO 手動抽取
+1. 下載 Windows ISO（[Win10](https://www.microsoft.com/software-download/windows10) / [Win11](https://www.microsoft.com/software-download/windows11)）
+2. 掛載 ISO → 複製 `sources\sxs` 整個資料夾
+3. 蓋掉對應的 `Win10_22H2/sxs/` 或 `Win11_25H2/sxs/`
 
+### 用腳本自動抽取
 以系統管理員執行 PowerShell：
-
 ```powershell
 .\build_offline_package.ps1
 ```
-
 - 自動掃描 `Downloads` 中的 `Win*.iso`
-- 自動掛載 → 偵測版本 → 複製 sxs → 卸載 ISO
-- 支援 Windows 10 / 11 多版本偵測
+- 自動掛載 → 偵測版本 → 複製 sxs
+- 支援 Win10 / Win11 多版本
 
 ## 常見問題
 
@@ -69,19 +69,10 @@ NET35-Offline-Installer/
 A: sxs 版本與 Windows 版本不合，腳本會自動轉 Windows Update 安裝。
 
 **Q: 可以放隨身碟嗎？**
-A: 可以。`install.bat` 使用相對路徑，放在任何位置都能跑。
+A: 可以。`install.bat` 使用相對路徑，放哪都能跑。
 
 **Q: 為什麼不用微軟的離線安裝包？**
-A: 微軟官方離線包（NDP35.exe）僅支援舊版 Windows；Windows 10/11 需透過 DISM 啟用功能。
-
-## 支援的 Windows 版本
-
-| Windows | 版本 | 備註 |
-|---------|------|------|
-| Windows 10 | 22H2 (build 19045) | 最終穩定版 |
-| Windows 11 | 25H2 | 最新版 |
-
-其他版本也相容 — 若 sxs 版本不合，腳本會自動走 Windows Update。
+A: 微軟官方 `NDP35.exe` 僅支援舊版 Windows；Windows 10/11 需透過 DISM 啟用功能。
 
 ## License
 
