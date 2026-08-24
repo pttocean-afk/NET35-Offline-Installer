@@ -45,6 +45,30 @@ Windows 安裝光碟的 `sources\sxs` 資料夾中已有 .NET 3.5 的 CAB 檔！
 
 > 遇到版本不合時，`install.bat` 會自動轉 Windows Update，不影響安裝。
 
+## Windows 11 26H1 (build 28000) 以上
+
+自 26H1 起，微軟已將 .NET 3.5 從 Windows 選用元件（FoD）移除，**DISM /sxs 與
+Windows Update 都無法再安裝**，只能用微軟的獨立安裝器。
+
+`install.bat` 偵測到 build ≥ 28000 時會自動改跑同資料夾內的 `DotNet35Setup.exe`
+（靜默 `/passive /norestart`）：
+
+```
+NET35-Offline-Installer/
+├── install.bat
+├── DotNet35Setup.exe   ← 自行從微軟下載放入（約 100MB，repo 不收）
+└── ...
+```
+
+下載點：<https://go.microsoft.com/fwlink/?LinkID=2337635>
+（官方說明與 FAQ：[Install .NET Framework 3.5 on Windows 11](https://learn.microsoft.com/en-us/dotnet/framework/install/dotnet-35-windows-11)）
+
+注意事項：
+- 安裝成功後可能要求重新開機（exit code 3010）。
+- 26H1 移除了 ASP.NET 3.5 等 IIS 相關元件，IIS 情境需另跑微軟的
+  [Enable-ASPNet35.ps1](https://go.microsoft.com/fwlink/?linkid=2348600)。
+- Windows 大版本升級後 .NET 3.5 不會保留，需重裝。
+
 ## 自訂 sxs（選用）
 
 若想自己準備特定版本的 sxs：

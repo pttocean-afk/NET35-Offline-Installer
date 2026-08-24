@@ -20,6 +20,14 @@
   Win10_22H2 → Windows 10 22H2 (build 19045)
   Win11_25H2 → Windows 11 25H2
 
+【Windows 11 26H1 (build 28000) 以上】
+  26H1 起微軟移除 .NET 3.5 選用元件，DISM/sxs 與 Windows Update 都裝不了，
+  改用微軟獨立安裝器：
+  1. 下載 https://go.microsoft.com/fwlink/?LinkID=2337635 (DotNet35Setup.exe)
+  2. 放到 install.bat 同一個資料夾
+  3. 執行 install.bat，會自動偵測並改跑獨立安裝器（/passive /norestart）
+  安裝後可能需要重新開機。
+
 【自訂 sxs（選用）】
   若想自己抽特定版本：
   1. 從 Windows ISO 複製 sources\sxs
