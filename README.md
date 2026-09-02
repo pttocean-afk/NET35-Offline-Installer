@@ -10,15 +10,22 @@
 
 ## 快速開始
 
-1. **下載** 本專案（Code → Download ZIP 或直接 git clone）
-2. 對 `install.bat` 按右鍵 → **以系統管理員身分執行**
-3. 完成！sxs 已內建在專案中，不需額外準備
+> ⚠️ **請從 GitHub Release 下載**：`NET35-Offline-Installer-v1.1-full.zip`
+
+1. 到本頁右側 **Releases** → 最新版 → 下載 `*.full.zip`（已含 `DotNet35Setup.exe`，完整可用）
+2. **不要**用頁面上方的 **Code → Download ZIP**：那是 git snapshot，**不含** `DotNet35Setup.exe`（26H1 用），26H1+ 會缺少安裝檔
+3. 解壓縮 `full.zip`
+4. 對 `install.bat` 按右鍵 → **以系統管理員身分執行**
+5. 完成！腳本會自動偵測 Windows 版本，選用對應方式安裝（sxs DISM 或 26H1 獨立安裝器）
 
 ## 檔案結構
 
+> 完整包（`NET35-Offline-Installer-v1.1-full.zip`）內容如下；**Code → Download ZIP 不含** `DotNet35Setup.exe`。
+
 ```
 NET35-Offline-Installer/
-├── install.bat                     ← 點兩下以系統管理員執行
+├── install.bat                     ← 以系統管理員執行（自動偵測版本）
+├── DotNet35Setup.exe               ← 26H1 專用安裝器（僅 Release full.zip 提供）
 ├── build_offline_package.ps1       ← (選用) 從 Windows ISO 自訂抽取 sxs
 ├── README.md
 ├── Win10_22H2/sxs/                 ← CAB 檔已內建
